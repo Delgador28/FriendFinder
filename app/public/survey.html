@@ -171,95 +171,97 @@
             Submit</div>
 
         <hr>
- 
+
 
     </div>
 
     <!-- Matching results div -->
+    <div id="resultsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
-    <div id="results" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-    
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h2 class="modal-title"><strong>Your best match is...</strong></h2>
-                    </div>
-                    <div class="modal-body">
-                        <h2 id="match"></h2>
-                        <img id="matchPhoto" class="img-responsive" src="http://lorempixel.com/400/200" alt="">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+            <!-- Modal Content-->
+            <div class="modal-content">
+
+                <!-- "X" Button to close the modal -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">
+                        <strong>Your new friend is:</strong>
+                    </h2>
                 </div>
-    
+
+                <!-- Modal Body (For Match Info) -->
+                <div class="modal-body">
+                    <h2 id="matchName"></h2>
+                    <img id="matchImg" src="" alt="Image Not Found" style="max-width: 350px;">
+                </div>
+
+                <!-- Modal Footer (Close Button) -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
             </div>
+
         </div>
-    
-        <footer class="footer">
-                <div class="container">
-                  <p><a href="../data/friends.js">API Friends List</a> | <a href="https://github.com/Delgador28/FriendFinder">GitHub Repo</a></p>
-                </div>
-              </footer>
+    </div>
+
+
+    <footer class="footer">
+        <div class="container">
+            <p>
+                <a href="/api/friends">API Friends List</a> |
+                <a href="https://github.com/Delgador28/FriendFinder">GitHub Repo</a>
+            </p>
+        </div>
+    </footer>
 
     <style>
         body {
-  
+
             font-family: 'Italiana', serif;
         }
     </style>
 
 
-</style>
-
-
-<script type="text/javascript">
-
-  $('#submit').on("click", function () {
-    if ($("#name").val().trim() === '' || ($("#photo").val().trim() === ''))  {
-      alert('Please complete the "About You" section!');
-      location.reload()
-    }
-    else if ($("#One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten").val() === null) {
-alert("Please answer all the questions")
-location.reload()
-    }
-    else {
-    var newUser = {
-      name: $("#name").val(),
-      photo: $("#photo").val(),
-      scores: [
-            $("#One").val(),
-            $("#Two").val(),
-            $("#Three").val(),
-            $("#Four").val(),
-            $("#Five").val(),
-            $("#Six").val(),
-            $("#Seven").val(),
-            $("#Eight").val(),
-            $("#Nine").val(),
-            $("#Ten").val()]
-      
-    }
-    var currentURL = window.location.origin;
-          $.post(currentURL + "/api/friends", newUser, function(data){
-            // Add Best Match attributes to Modal
-            $('#match').text(data.name);
-            $('#matchPhoto').attr('src', data.photo);
-            // Show the modal with the best match 
-            $("#results").modal('toggle');
     
-    
-})
-    
-  }
-})
-  
-  
-</script>
 
+
+
+    <script type="text/javascript">
+        $('#submit').on("click", function () {
+            //validation inside the on-click function. there is probably a cleaner way to do this but it's working.
+            if ($("#name").val().trim() === '' || ($("#photo").val().trim() === '')) {
+                alert('Please complete the "About You" section!');
+                location.reload()
+            }
+            else if ($("#question1, question2, question3, question4, question5, question6, question7, question8, question9, question10").val() === null) {
+                alert("Please answer all the questions")
+                location.reload()
+            }
+            else {
+                var newUser = {
+                    name: $("#name").val(),
+                    photo: $("#photo").val(),
+                    scores: [$("#question1").val(), $("#question2").val(), $("#question3").val(), $("#question4").val(), $("#question5").val(), $("#question6").val(), $("#question7").val(), $("#question8").val(), $("#question9").val(), $("#question10").val()]
+
+                }
+                var currentURL = window.location.origin;
+                $.post(currentURL + "/api/friends", newUser, function (data) {
+                    // Add Best Match attributes to Modal
+                    $('#matchName').text(data.name);
+                    $('#matchImg').attr('src', data.photo);
+                    // Show the modal with the best match 
+                    $("#resultsModal").modal('toggle');
+
+
+                })
+
+            }
+        })
+
+
+    </script>
 
 </body>
 
